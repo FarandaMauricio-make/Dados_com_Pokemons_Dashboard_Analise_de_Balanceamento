@@ -7,7 +7,7 @@ import pandas as pd
 @st.cache_data(ttl=3600)  # ttl = tempo em segundos (3600 = 1h)
 def carregar_dados():
     # Substitua pelo caminho correto do seu banco de dados
-    conn = sqlite3.connect(r"G:\Meu Drive\Projetos\Poke_projeto\Pokemao\pokemon_dw.db")
+    conn = sqlite3.connect("pokemon_dw.db")
     query = """
     SELECT p.id, p.name, SUM(s.base_stat) AS bst,
            GROUP_CONCAT(pt.type_name) AS types,
@@ -262,4 +262,5 @@ with tabVal:
         color_discrete_map=color_map   # <- cores fixas
     )
     fig_slope.update_yaxes(autorange="reversed")
+
     st.plotly_chart(fig_slope, use_container_width=True)
