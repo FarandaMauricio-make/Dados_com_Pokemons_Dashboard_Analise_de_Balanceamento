@@ -4,7 +4,7 @@ import sqlite3
 import pandas as pd
 
 # 1. Conexão com o banco de dados SQLite
-conn = sqlite3.connect(r"G:\Meu Drive\Projetos\Poke_projeto\Pokemao\pokemon_dw.db")
+conn = sqlite3.connect(r"Inserir aqui o diretório do banco de dados")
 
 # 2. Consulta SQL para montar o DataFrame
 query = """
@@ -257,4 +257,5 @@ with tabVal:
         color_discrete_map=color_map   # <- cores fixas
     )
     fig_slope.update_yaxes(autorange="reversed")
+
     st.plotly_chart(fig_slope, use_container_width=True)
