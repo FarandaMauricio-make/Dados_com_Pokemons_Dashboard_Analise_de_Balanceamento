@@ -8,7 +8,7 @@ st.set_page_config(page_title="Pokémon Balance", layout="wide")
 @st.cache_data(ttl=3600)  # ttl = tempo em segundos (3600 = 1h)
 def carregar_dados():
     # Substitua pelo caminho correto do seu banco de dados
-    conn = sqlite3.connect("pokemon_dw.db")
+    conn = sqlite3.connect(r"G:\Meu Drive\Projetos\Poke_projeto\Pokemao\pokemon_dw.db")
     query = """
     SELECT p.id, p.name, SUM(s.base_stat) AS bst,
            GROUP_CONCAT(pt.type_name) AS types,
@@ -216,21 +216,21 @@ with tabVal:
 
     # Tabela contagem de Pokémons por tipo primário e secundário
     contagem_unica = (
-        df_tipos_explodido.groupby("tipo")["id"]
-        .nunique()
-        .reset_index()
-        .sort_values("id", ascending=False)
-    )
+    df_tipos_explodido.groupby("tipo")["id"]
+    .nunique()
+    .reset_index()
+    .sort_values("id", ascending=False)
+)
     contagem_unica.columns = ["Tipo", "Quantidade de Pokémons por tipo primário e secundário"]
-    st.dataframe(contagem_unica)
+    st.dataframe(contagem_unica, use_container_width=True, height=400)
 
     # Tabela Comparação entre Método A (Duplicar) e Método B (Dividir)
     comparacao = pd.concat([
         bst_por_tipo_duplo.set_index("tipo")["bst"],
         bst_por_tipo_B_df.set_index("tipo")["bst_por_tipo"]
-    ], axis=1)
+], axis=1)
     comparacao.columns = ["Média (Duplicar)", "Média (Dividir)"]
-    st.dataframe(comparacao)
+    st.dataframe(comparacao, use_container_width=True, height=400)
 
     # Ranking Método A (Duplicar)
     ranking_A = bst_por_tipo_duplo.reset_index(drop=True).reset_index()
@@ -262,6 +262,4 @@ with tabVal:
         color_discrete_map=color_map   # <- cores fixas
     )
     fig_slope.update_yaxes(autorange="reversed")
-
     st.plotly_chart(fig_slope, use_container_width=True)
-
