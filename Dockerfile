@@ -12,4 +12,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Comando para iniciar o Streamlit
-CMD streamlit run Pokemon_Balance --server.port $PORT --server.headless true
+streamlit run Pokemon_Balance.py --server.port $PORT --server.headless true
