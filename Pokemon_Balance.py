@@ -3,22 +3,27 @@ import plotly.express as px
 import sqlite3
 import pandas as pd
 
-# 1. Conexão com o banco de dados SQLite
-conn = sqlite3.connect(r"Inserir aqui o diretório do banco de dados")
+# 1. Função para conexão e consulta ao banco de dados SQLite
+@st.cache_data(ttl=3600)  # ttl = tempo em segundos (3600 = 1h)
+def carregar_dados():
+    # Substitua pelo caminho correto do seu banco de dados
+    conn = sqlite3.connect(r"G:\Meu Drive\Projetos\Poke_projeto\Pokemao\pokemon_dw.db")
+    query = """
+    SELECT p.id, p.name, SUM(s.base_stat) AS bst,
+           GROUP_CONCAT(pt.type_name) AS types,
+           sp.is_legendary, sp.is_mythical
+    FROM pokemon p
+    JOIN pokemon_stats s ON p.id = s.pokemon_id
+    JOIN pokemon_types pt ON p.id = pt.pokemon_id
+    JOIN species sp ON p.id = sp.pokemon_id
+    GROUP BY p.id, p.name
+    """
+    df = pd.read_sql_query(query, conn)
+    conn.close()
+    return df
 
-# 2. Consulta SQL para montar o DataFrame
-query = """
-SELECT p.id, p.name, SUM(s.base_stat) AS bst,
-       GROUP_CONCAT(pt.type_name) AS types,
-       sp.is_legendary, sp.is_mythical
-FROM pokemon p
-JOIN pokemon_stats s ON p.id = s.pokemon_id
-JOIN pokemon_types pt ON p.id = pt.pokemon_id
-JOIN species sp ON p.id = sp.pokemon_id
-GROUP BY p.id, p.name
-"""
-df = pd.read_sql_query(query, conn)
-conn.close()
+# 2. Uso da função
+df = carregar_dados()
 
 # 3. Configuração da página no Streamlit
 st.set_page_config(page_title="Pokémon Balance", layout="wide")
@@ -257,5 +262,4 @@ with tabVal:
         color_discrete_map=color_map   # <- cores fixas
     )
     fig_slope.update_yaxes(autorange="reversed")
-
     st.plotly_chart(fig_slope, use_container_width=True)
