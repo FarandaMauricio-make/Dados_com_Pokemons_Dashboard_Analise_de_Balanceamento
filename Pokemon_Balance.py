@@ -3,6 +3,7 @@ import plotly.express as px
 import sqlite3
 import pandas as pd
 
+st.set_page_config(page_title="Pokémon Balance", layout="wide")
 # 1. Função para conexão e consulta ao banco de dados SQLite
 @st.cache_data(ttl=3600)  # ttl = tempo em segundos (3600 = 1h)
 def carregar_dados():
@@ -26,7 +27,6 @@ def carregar_dados():
 df = carregar_dados()
 
 # 3. Configuração da página no Streamlit
-st.set_page_config(page_title="Pokémon Balance", layout="wide")
 st.title("⚖️ Análise de Balanceamento de Pokémon")
 
 # 4. Filtro para incluir/excluir Pokémon lendários e míticos
@@ -264,3 +264,4 @@ with tabVal:
     fig_slope.update_yaxes(autorange="reversed")
 
     st.plotly_chart(fig_slope, use_container_width=True)
+
