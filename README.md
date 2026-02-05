@@ -51,4 +51,4 @@ O objetivo é explorar diferentes formas de calcular o **Base Stat Total (BST)**
 - [Pandas](https://pandas.pydata.org/)
 
 ---
-
+Você pode conferir o funcionamento do dashboard no seguinte link: [Dashboard_Pokemon_Balance](https://dados-com-pokemons-dashboard-analise-de-zyrv.onrender.com)
